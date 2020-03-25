@@ -85,11 +85,14 @@ Car.prototype.fill = function (gallons) {
   this.tank = this.tank + gallons;
 }
 Car.prototype.drive = function (distance, milesPerGallon) {
-  this.odometer = distance;
+  this.odometer = this.odometer + distance;
   this.tank = Math.floor(distance / milesPerGallon);
-  if (this.tank === 0) {
-    return `I ran out of fuel at ${this.odometer}!`
+  this.totalDistance = this.tank * this.milesPerGallon;
+  
+  if (this.milesPerGallon * this.tank < this.odometer) {
+    return `I ran out of fuel at ${this.odometer} miles!`
   }
+  
   
 }
 
@@ -100,10 +103,12 @@ Car.prototype.drive = function (distance, milesPerGallon) {
     - Besides the methods on Person.prototype, babies have the ability to `.play()`:
         + Should return a string "Playing with x", x being the favorite toy.
 */
-function Baby(attrs) {
-  Person.call(this, attrs)
-  this.favoriteToy = attrs.favoriteToy;
+function Baby(name, age, favoriteToy) {
+  Person.call(this, name, age)
+  this.favoriteToy = favoriteToy;
 }
+
+
 
 Baby.prototype = Object.create(Person.prototype);
 
@@ -125,9 +130,9 @@ lucy.play();
   In your own words explain the four principles for the "this" keyword below:
   1. this binds to window by default.
 
-  2. implicit binding
+  2. implicit binding points to the object left of the period.
 
-  3.  explicit binding
+  3.  explicit binding set this to point to a cert value using call, apply, or bind.
   
   4.  new binding - empty object is created and referenced by this variable, inheriting the prototype function. Properties and methods are added to the object referenced by this. returned at the end implicitly if no other object was returned explicity.
 */
