@@ -39,9 +39,26 @@ Airplane.prototype.land = function () {
         + It should return a string with `name` and `age`. Example: "Mary, 50"
 */
 
-function Person() {
-
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+  this.stomach = []
 }
+
+Person.prototype.eat = function (someFood) {
+  this.stomach.push(someFood);
+  if (this.stomach.length > 10) {
+    this.stomach.pop();
+  }
+}
+
+Person.prototype.poop = function () {
+  this.stomach = [];
+}
+Person.prototype.toString = function () {
+  return `${this.name}, ${this.age}`
+}
+
 
 /*
   TASK 2
@@ -57,8 +74,26 @@ function Person() {
         + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
 */
 
-function Car() {
+function Car(model, milesPerGallon) {
+  this.model = model;
+  this.milesPerGallon = milesPerGallon;
+  this.tank = 0;
+  this.odometer = 0;
+}
 
+Car.prototype.fill = function (gallons) {
+  this.tank = this.tank + gallons;
+}
+Car.prototype.drive = function (distance, milesPerGallon) {
+  this.odometer = this.odometer + distance;
+  this.tank = Math.floor(distance / milesPerGallon);
+  this.totalDistance = this.tank * this.milesPerGallon;
+  
+  if (this.milesPerGallon * this.tank < this.odometer) {
+    return `I ran out of fuel at ${this.odometer} miles!`
+  }
+  
+  
 }
 
 /*
@@ -68,18 +103,38 @@ function Car() {
     - Besides the methods on Person.prototype, babies have the ability to `.play()`:
         + Should return a string "Playing with x", x being the favorite toy.
 */
-function Baby() {
-
+function Baby(name, age, favoriteToy) {
+  Person.call(this, name, age)
+  this.favoriteToy = favoriteToy;
 }
+
+
+
+Baby.prototype = Object.create(Person.prototype);
+
+const lucy = new Baby({
+  name: 'Lucy',
+  age: 5,
+  favoriteToy: 'trains',
+});
+
+Baby.prototype.play = function () {
+  return `Playing with ${this.favoriteToy}`
+}
+
+lucy.play();
 
 /* 
   TASK 4
 
   In your own words explain the four principles for the "this" keyword below:
-  1. 
-  2. 
-  3. 
-  4. 
+  1. this binds to window by default.
+
+  2. implicit binding points to the object left of the period.
+
+  3.  explicit binding set this to point to a cert value using call, apply, or bind.
+  
+  4.  new binding - empty object is created and referenced by this variable, inheriting the prototype function. Properties and methods are added to the object referenced by this. returned at the end implicitly if no other object was returned explicity.
 */
 
 
